@@ -1,17 +1,18 @@
 require "syllogism/version"
+require "syllogism/statement"
 
 class Syllogism
-  class Error < StandardError; end
-
   attr_reader :errors
 
-  def [](*statements)
-    new(*statements)
+  def [](*raw_statements)
+    new(*raw_statements)
   end
 
-  def initialize(*statements)
+  def initialize(*raw_statements)
     @errors = []
-    @statements = statements
+    @statements = raw_statements.map do |raw_statement|
+      Statement.new(raw_statement)
+    end
   end
 
   def premises
@@ -23,19 +24,18 @@ class Syllogism
   end
 
   def valid?
-    statements.each { |statement| verb?(statement) }
-
-    errors.empty?
+    statements.all? do |statement|
+      if statement.wff?
+        true
+      else
+        statement.errors.each { |error| errors.push(error) }
+        false
+      end
+    end
   end
 
   private
 
   attr_reader :statements
   attr_writer :errors
-
-  def verb?(statement)
-    unless statement.include?("is")
-      errors.push("'#{statement}' does not contain the verb 'is'")
-    end
-  end
 end
