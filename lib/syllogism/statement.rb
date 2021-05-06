@@ -1,26 +1,51 @@
 class Syllogism
   class Statement
+    GENERAL_TERMS = ("A".."Z").freeze
+    SINGULAR_TERMS = ("a".."z").freeze
+    QUALITIES = ["not"].freeze
+    QUANTITIES = ["all", "some", "no"].freeze
+    VERBS = ["is", "are"].freeze
+
     attr_reader :errors
 
     def initialize(string)
       @errors = []
       @string = string
+      @atoms = string.split(" ")
     end
 
     def wff?
-      verb?
+      known_atoms? && verb?
     end
 
     private
 
-    attr_reader :string
+    attr_reader :atoms, :string
+
+    def known_atoms?
+      atoms.map do |atom|
+        if atom.length > 1
+          if (QUALITIES + QUANTITIES + VERBS).include?(atom.downcase)
+            true
+          else
+            errors.push("'#{atom}' is an unknown atom")
+            false
+          end
+        elsif GENERAL_TERMS.include?(atom) || SINGULAR_TERMS.include?(atom)
+          true
+        else
+          errors.push("'#{atom}' is an unknown atom")
+          false
+        end
+      end.all?
+    end
 
     def verb?
-      if string.include?("is")
-        true
-      else
+      if (atoms & VERBS).empty?
         errors.push("'#{string}' does not contain the verb 'is'")
         false
+      else
+        true
       end
     end
   end
