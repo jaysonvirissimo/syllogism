@@ -21,9 +21,13 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-valid_argument = Syllogism['all P is S', 'j is P', 'j is S']
-valid_argument.valid? # => true
-valid_argument.errors.empty? # => true
+# Individual statements:
+statement = Syllogism::Statement.new('all 1s are numbers')
+statement.wff? # => false
+statement.errors # => ["'1s' is an unknown atom", "'numbers' is an unknown atom"]
+
+# Entire arguments:
+Syllogism['all P is S', 'j is P', 'j is S'].valid? # => true
 ```
 
 ## Development
