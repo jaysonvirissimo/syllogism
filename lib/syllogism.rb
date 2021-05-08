@@ -1,5 +1,7 @@
-require "syllogism/version"
+require "syllogism/atom"
+require "syllogism/general_term"
 require "syllogism/statement"
+require "syllogism/version"
 
 class Syllogism
   attr_reader :errors

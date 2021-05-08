@@ -1,6 +1,5 @@
 class Syllogism
   class Statement
-    GENERAL_TERMS = ("A".."Z").freeze
     SINGULAR_TERMS = ("a".."z").freeze
     QUALITIES = ["not"].freeze
     QUANTITIES = ["all", "some", "no"].freeze
@@ -31,7 +30,7 @@ class Syllogism
             errors.push("'#{atom}' is an unknown atom")
             false
           end
-        elsif GENERAL_TERMS.include?(atom) || SINGULAR_TERMS.include?(atom)
+        elsif GeneralTerm.new(atom).match? || SINGULAR_TERMS.include?(atom)
           true
         else
           errors.push("'#{atom}' is an unknown atom")
