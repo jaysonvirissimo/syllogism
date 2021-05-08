@@ -2,7 +2,7 @@ class Syllogism
   class Atom
     attr_reader :value
 
-    def initialize(value) 
+    def initialize(value)
       @value = value
     end
 

@@ -1,6 +1,6 @@
 class Syllogism
   class Statement
-    SINGULAR_TERMS = ("a".."z").freeze
+    ATOMIC_TYPES = [GeneralTerm, SingularTerm].freeze
     QUALITIES = ["not"].freeze
     QUANTITIES = ["all", "some", "no"].freeze
     VERBS = ["is", "are"].freeze
@@ -30,7 +30,7 @@ class Syllogism
             errors.push("'#{atom}' is an unknown atom")
             false
           end
-        elsif GeneralTerm.new(atom).match? || SINGULAR_TERMS.include?(atom)
+        elsif ATOMIC_TYPES.any? { |type| type.new(atom).match? }
           true
         else
           errors.push("'#{atom}' is an unknown atom")
