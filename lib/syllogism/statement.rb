@@ -2,7 +2,6 @@ class Syllogism
   class Statement
     ATOMIC_TYPES = [GeneralTerm, SingularTerm].freeze
     QUALITIES = ["not"].freeze
-    QUANTITIES = ["all", "some", "no"].freeze
     VERBS = ["is", "are"].freeze
 
     attr_reader :errors
@@ -24,7 +23,7 @@ class Syllogism
     def known_atoms?
       atoms.map do |atom|
         if atom.length > 1
-          if (QUALITIES + QUANTITIES + VERBS).include?(atom.downcase)
+          if (QUALITIES + VERBS).include?(atom.downcase) || Quantity.new(atom).match?
             true
           else
             errors.push("'#{atom}' is an unknown atom")
