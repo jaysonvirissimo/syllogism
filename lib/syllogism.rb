@@ -4,6 +4,7 @@ require "syllogism/negation"
 require "syllogism/quantity"
 require "syllogism/singular_term"
 require "syllogism/statement"
+require "syllogism/verb"
 require "syllogism/version"
 
 class Syllogism
