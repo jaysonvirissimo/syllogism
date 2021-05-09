@@ -1,5 +1,6 @@
 require "syllogism/atom"
 require "syllogism/general_term"
+require "syllogism/negation"
 require "syllogism/quantity"
 require "syllogism/singular_term"
 require "syllogism/statement"

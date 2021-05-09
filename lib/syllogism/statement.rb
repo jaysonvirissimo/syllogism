@@ -23,7 +23,7 @@ class Syllogism
     def known_atoms?
       atoms.map do |atom|
         if atom.length > 1
-          if (QUALITIES + VERBS).include?(atom.downcase) || Quantity.new(atom).match?
+          if VERBS.include?(atom.downcase) || Negation.new(atom).match? || Quantity.new(atom).match?
             true
           else
             errors.push("'#{atom}' is an unknown atom")
