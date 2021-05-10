@@ -31,12 +31,25 @@ class Syllogism
     end
 
     def wff?
-      known_atoms? && verb?
+      known_atoms? && verb? && known_formula?
     end
 
     private
 
     attr_reader :atoms
+
+    WELL_FORMED_FORMULAS = [
+      [Quantity, GeneralTerm, Verb, GeneralTerm],
+      [SingularTerm, Verb, GeneralTerm],
+      [SingularTerm, Verb, SingularTerm],
+      [Quantity, GeneralTerm, Verb, Negation, GeneralTerm],
+      [SingularTerm, Verb, Negation, GeneralTerm],
+      [SingularTerm, Verb, Negation, SingularTerm]
+    ].freeze
+
+    def atom_types
+      @atom_types ||= atoms.map { |atom| atom.class }
+    end
 
     def known_atoms?
       unknown = atoms.select { |atom| atom.instance_of?(Unknown) }
@@ -51,11 +64,17 @@ class Syllogism
       end
     end
 
+    def known_formula?
+      WELL_FORMED_FORMULAS.any? do |formula|
+        atom_types == formula
+      end
+    end
+
     def verb?
       if atoms.any? { |atom| atom.instance_of?(Verb) }
         true
       else
-        errors.push("'#{to_s}' does not contain the verb 'is' or 'are'")
+        errors.push("'#{self}' does not contain the verb 'is' or 'are'")
         false
       end
     end
