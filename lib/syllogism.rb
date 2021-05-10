@@ -18,7 +18,7 @@ class Syllogism
   def initialize(*raw_statements)
     @errors = []
     @statements = raw_statements.map do |raw_statement|
-      Statement.new(raw_statement)
+      Statement.parse(raw_statement)
     end
   end
 

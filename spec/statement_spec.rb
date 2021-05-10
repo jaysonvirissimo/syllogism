@@ -1,5 +1,9 @@
 RSpec.describe Syllogism::Statement do
-  subject { described_class.new(raw_statement) }
+  subject { described_class.parse(raw_statement) }
+
+  describe "#to_s" do
+
+  end
 
   describe "#wff" do
     context "when the statement is well-formed" do
@@ -9,7 +13,7 @@ RSpec.describe Syllogism::Statement do
 
       it do
         well_formed_raw_statements.each do |raw_statement|
-          expect(described_class.new(raw_statement)).to be_wff
+          expect(described_class.parse(raw_statement)).to be_wff
         end
       end
     end

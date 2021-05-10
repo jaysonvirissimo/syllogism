@@ -22,9 +22,16 @@ Or install it yourself as:
 
 ```ruby
 # Individual statements:
-statement = Syllogism::Statement.new('all 1s are numbers')
-statement.wff? # => false
-statement.errors # => ["'1s' is an unknown atom", "'numbers' is an unknown atom"]
+Syllogism::Statement.parse('all 1s are numbers').tap do |invalid_statement|
+  invalid_statement.wff? # => false
+  invalid_statement.errors
+  # => ["'1s' is an unknown atom", "'numbers' is an unknown atom"]
+end
+
+Syllogism::Statement.parse('all X is Y').tap do |valid_statement|
+  valid_statement.wff? # => true
+  valid_statement.errors # => []
+end
 
 # Entire arguments:
 Syllogism['all P is S', 'j is P', 'j is S'].valid? # => true

@@ -11,10 +11,23 @@ class Syllogism
 
     attr_reader :errors
 
-    def initialize(string)
+    def self.atomize(word)
+      ATOMIC_TYPES.map do |type|
+        type.new(word)
+      end.detect { |atom| atom.match? }
+    end
+
+    def self.parse(string)
+      new(string.split(" ").map { |word| atomize(word) })
+    end
+
+    def initialize(atoms)
+      @atoms = atoms
       @errors = []
-      @string = string
-      @atoms = string.split(" ").map { |word| atomize(word) }
+    end
+
+    def to_s
+      atoms.map(&:value).join(" ")
     end
 
     def wff?
@@ -23,13 +36,7 @@ class Syllogism
 
     private
 
-    attr_reader :atoms, :string
-
-    def atomize(word)
-      ATOMIC_TYPES.map do |type|
-        type.new(word)
-      end.detect { |atom| atom.match? }
-    end
+    attr_reader :atoms
 
     def known_atoms?
       unknown = atoms.select { |atom| atom.instance_of?(Unknown) }
@@ -48,7 +55,7 @@ class Syllogism
       if atoms.any? { |atom| atom.instance_of?(Verb) }
         true
       else
-        errors.push("'#{string}' does not contain the verb 'is' or 'are'")
+        errors.push("'#{to_s}' does not contain the verb 'is' or 'are'")
         false
       end
     end
