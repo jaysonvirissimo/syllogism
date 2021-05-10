@@ -1,7 +1,9 @@
 class Syllogism
   class Statement
     ATOMIC_TYPES = [
-      Quantity,
+      All,
+      No,
+      Some,
       GeneralTerm,
       Verb,
       Negation,
@@ -39,10 +41,12 @@ class Syllogism
     attr_reader :atoms
 
     WELL_FORMED_FORMULAS = [
-      [Quantity, GeneralTerm, Verb, GeneralTerm],
+      [All, GeneralTerm, Verb, GeneralTerm],
+      [Some, GeneralTerm, Verb, GeneralTerm],
       [SingularTerm, Verb, GeneralTerm],
       [SingularTerm, Verb, SingularTerm],
-      [Quantity, GeneralTerm, Verb, Negation, GeneralTerm],
+      [No, GeneralTerm, Verb, GeneralTerm],
+      [Some, GeneralTerm, Verb, Negation, GeneralTerm],
       [SingularTerm, Verb, Negation, GeneralTerm],
       [SingularTerm, Verb, Negation, SingularTerm]
     ].freeze

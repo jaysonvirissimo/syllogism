@@ -15,9 +15,8 @@ RSpec.describe Syllogism::Statement do
     end
 
     context "when the statement is not well-formed" do
-      # TODO: Ensure that "all X is not Y" does not count as well-formed
       let(:poorly_formed_raw_statements) do
-        ["only A is B", "some a is b", "F is G"]
+        ["only A is B", "some a is b", "F is G", "all X is not Y"]
       end
 
       it do
