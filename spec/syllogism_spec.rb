@@ -11,7 +11,7 @@ RSpec.describe Syllogism do
 
       it do
         expect(subject).to_not be_valid
-        expect(subject.errors).to include("'all X Y' does not contain the verb 'is'")
+        expect(subject.errors).to include("'all X Y' does not contain the verb 'is' or 'are'")
       end
     end
   end

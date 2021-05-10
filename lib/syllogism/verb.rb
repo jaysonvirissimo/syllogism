@@ -3,7 +3,7 @@ class Syllogism
     VERB_VALUES = ["is", "are"].freeze
 
     def match?
-      VERB_VALUES.include?(value)
+      VERB_VALUES.include?(value.downcase)
     end
   end
 end

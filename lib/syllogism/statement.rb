@@ -1,13 +1,20 @@
 class Syllogism
   class Statement
-    ATOMIC_TYPES = [GeneralTerm, SingularTerm].freeze
+    ATOMIC_TYPES = [
+      Quantity,
+      GeneralTerm,
+      Verb,
+      Negation,
+      SingularTerm,
+      Unknown
+    ].freeze
 
     attr_reader :errors
 
     def initialize(string)
       @errors = []
       @string = string
-      @atoms = string.split(" ")
+      @atoms = string.split(" ").map { |word| atomize(word) }
     end
 
     def wff?
@@ -18,32 +25,31 @@ class Syllogism
 
     attr_reader :atoms, :string
 
-    def known_atoms?
-      atoms.map do |atom|
-        if atom.length > 1
-          if Verb.new(atom).match? || Negation.new(atom).match? || Quantity.new(atom).match?
-            true
-          else
-            errors.push("'#{atom}' is an unknown atom")
-            false
-          end
-        elsif ATOMIC_TYPES.any? { |type| type.new(atom).match? }
-          true
-        else
-          errors.push("'#{atom}' is an unknown atom")
-          false
-        end
-      end.all?
+    def atomize(word)
+      ATOMIC_TYPES.map do |type|
+        type.new(word)
+      end.detect { |atom| atom.match? }
     end
 
-    def verb?
-      potential_verbs = atoms.select { |atom| Verb.new(atom).match? }
+    def known_atoms?
+      unknown = atoms.select { |atom| atom.instance_of?(Unknown) }
+      if unknown.any?
+        unknown.each do |atom|
+          errors.push("'#{atom.value}' is an unknown atom")
+        end
 
-      if potential_verbs.empty?
-        errors.push("'#{string}' does not contain the verb 'is'")
         false
       else
         true
+      end
+    end
+
+    def verb?
+      if atoms.any? { |atom| atom.instance_of?(Verb) }
+        true
+      else
+        errors.push("'#{string}' does not contain the verb 'is' or 'are'")
+        false
       end
     end
   end

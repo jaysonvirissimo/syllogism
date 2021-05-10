@@ -3,8 +3,9 @@ require "syllogism/general_term"
 require "syllogism/negation"
 require "syllogism/quantity"
 require "syllogism/singular_term"
-require "syllogism/statement"
+require "syllogism/unknown"
 require "syllogism/verb"
+require "syllogism/statement"
 require "syllogism/version"
 
 class Syllogism

@@ -4,7 +4,7 @@ RSpec.describe Syllogism::Statement do
   describe "#wff" do
     context "when the statement is well-formed" do
       let(:well_formed_raw_statements) do
-        ["all X is Y", "some X is Y", "no X is Y", "no X is Y"]
+        ["all X is Y", "some X is Y", "no X is Y", "some X is not Y"]
       end
 
       it do
