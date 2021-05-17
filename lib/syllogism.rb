@@ -16,15 +16,17 @@ require "syllogism/wff_checker"
 class Syllogism
   attr_reader :errors
 
-  def [](*raw_statements)
-    new(*raw_statements)
+  def self.[](*raw_statements)
+    parse(*raw_statements)
   end
 
-  def initialize(*raw_statements)
+  def self.parse(*raw_statements)
+    new(raw_statements.map { |raw_statement| Statement.parse(raw_statement) })
+  end
+
+  def initialize(statements)
     @errors = []
-    @statements = raw_statements.map do |raw_statement|
-      Statement.parse(raw_statement)
-    end
+    @statements = statements
   end
 
   def premises

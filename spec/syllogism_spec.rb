@@ -3,8 +3,8 @@ RSpec.describe Syllogism do
     expect(Syllogism::VERSION).not_to be nil
   end
 
-  describe "#new" do
-    subject { described_class.new(*statements) }
+  describe "[]" do
+    subject { described_class[*statements] }
 
     context "with an invalid statement" do
       let(:statements) { ["all X Y", "some Y is Z", "some X is Z"] }
