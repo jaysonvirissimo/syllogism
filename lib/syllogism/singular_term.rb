@@ -1,9 +1,11 @@
 class Syllogism
-  class SingularTerm < Atom
-    SINGULAR_TERM_VALUES = ("a".."z").freeze
-
+  class SingularTerm < Term
     def match?
       SINGULAR_TERM_VALUES.include?(value)
     end
+
+    private
+
+    SINGULAR_TERM_VALUES = ("a".."z").freeze
   end
 end

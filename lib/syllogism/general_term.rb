@@ -1,9 +1,11 @@
 class Syllogism
-  class GeneralTerm < Atom
-    GENERAL_TERM_VALUES = ("A".."Z").freeze
-
+  class GeneralTerm < Term
     def match?
       GENERAL_TERM_VALUES.include?(value)
     end
+
+    private
+
+    GENERAL_TERM_VALUES = ("A".."Z").freeze
   end
 end
