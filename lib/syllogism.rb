@@ -10,6 +10,7 @@ require "syllogism/unknown"
 require "syllogism/verb"
 require "syllogism/statement"
 require "syllogism/version"
+require "syllogism/wff_checker"
 
 class Syllogism
   attr_reader :errors

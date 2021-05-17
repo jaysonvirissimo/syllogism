@@ -1,6 +1,6 @@
 class Syllogism
   class Statement
-    attr_reader :errors
+    attr_reader :atoms, :errors
 
     def self.atomize(word)
       ATOMIC_TYPES.map do |type|
@@ -35,8 +35,6 @@ class Syllogism
 
     private
 
-    attr_reader :atoms
-
     ATOMIC_TYPES = [
       All,
       No,
@@ -50,29 +48,12 @@ class Syllogism
 
     TERM_TYPES = [GeneralTerm, SingularTerm].freeze
 
-    WELL_FORMED_FORMULAS = [
-      [All, GeneralTerm, Verb, GeneralTerm],
-      [Some, GeneralTerm, Verb, GeneralTerm],
-      [SingularTerm, Verb, GeneralTerm],
-      [SingularTerm, Verb, SingularTerm],
-      [No, GeneralTerm, Verb, GeneralTerm],
-      [Some, GeneralTerm, Verb, Negation, GeneralTerm],
-      [SingularTerm, Verb, Negation, GeneralTerm],
-      [SingularTerm, Verb, Negation, SingularTerm]
-    ].freeze
-
-    def atom_types
-      @atom_types ||= atoms.map { |atom| atom.class }
-    end
-
     def known_atoms?
       unknown.none?
     end
 
     def known_formula?
-      WELL_FORMED_FORMULAS.any? do |formula|
-        atom_types == formula
-      end
+      WffChecker.new(self).any?
     end
 
     def terms
