@@ -1,6 +1,15 @@
 RSpec.describe Syllogism::Statement do
   subject { described_class.parse(raw_statement) }
 
+  describe "[]" do
+    let(:raw_statement) { "all X is Y" }
+
+    it "acts as an abbreviated parse" do
+      instance = described_class[raw_statement]
+      expect(instance.atoms.length).to eq(4)
+    end
+  end
+
   describe "#predicate" do
     let(:raw_statement) { "all X is Y" }
 

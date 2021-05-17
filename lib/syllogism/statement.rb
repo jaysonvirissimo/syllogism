@@ -2,6 +2,10 @@ class Syllogism
   class Statement
     attr_reader :atoms, :errors
 
+    def self.[](string)
+      parse(string)
+    end
+
     def self.atomize(word)
       ATOMIC_TYPES.map do |type|
         type.new(word)
