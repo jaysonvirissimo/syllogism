@@ -66,16 +66,7 @@ class Syllogism
     end
 
     def known_atoms?
-      unknown = atoms.select { |atom| atom.instance_of?(Unknown) }
-      if unknown.any?
-        unknown.each do |atom|
-          errors.push("'#{atom.value}' is an unknown atom")
-        end
-
-        false
-      else
-        true
-      end
+      unknown.none?
     end
 
     def known_formula?
@@ -86,6 +77,14 @@ class Syllogism
 
     def terms
       @terms ||= atoms.select { |atom| TERM_TYPES.include?(atom.class) }
+    end
+
+    def unknown
+      @unknown ||= atoms.select do |atom|
+        atom.instance_of?(Unknown)
+      end.tap do |atoms|
+        atoms.each { |atom| errors.push("'#{atom.value}' is an unknown atom") }
+      end
     end
 
     def verb?
