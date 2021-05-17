@@ -1,16 +1,5 @@
 class Syllogism
   class Statement
-    ATOMIC_TYPES = [
-      All,
-      No,
-      Some,
-      GeneralTerm,
-      Verb,
-      Negation,
-      SingularTerm,
-      Unknown
-    ].freeze
-
     attr_reader :errors
 
     def self.atomize(word)
@@ -28,6 +17,14 @@ class Syllogism
       @errors = []
     end
 
+    def predicate
+      terms.last
+    end
+
+    def subject
+      terms.first
+    end
+
     def to_s
       atoms.map(&:value).join(" ")
     end
@@ -39,6 +36,19 @@ class Syllogism
     private
 
     attr_reader :atoms
+
+    ATOMIC_TYPES = [
+      All,
+      No,
+      Some,
+      GeneralTerm,
+      Verb,
+      Negation,
+      SingularTerm,
+      Unknown
+    ].freeze
+
+    TERM_TYPES = [GeneralTerm, SingularTerm].freeze
 
     WELL_FORMED_FORMULAS = [
       [All, GeneralTerm, Verb, GeneralTerm],
@@ -72,6 +82,10 @@ class Syllogism
       WELL_FORMED_FORMULAS.any? do |formula|
         atom_types == formula
       end
+    end
+
+    def terms
+      @terms ||= atoms.select { |atom| TERM_TYPES.include?(atom.class) }
     end
 
     def verb?

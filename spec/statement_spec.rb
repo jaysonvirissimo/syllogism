@@ -1,6 +1,18 @@
 RSpec.describe Syllogism::Statement do
   subject { described_class.parse(raw_statement) }
 
+  describe "#predicate" do
+    let(:raw_statement) { "all X is Y" }
+
+    it { expect(subject.predicate.value).to eq("Y") }
+  end
+
+  describe "#subject" do
+    let(:raw_statement) { "all X is Y" }
+
+    it { expect(subject.subject.value).to eq("X") }
+  end
+
   describe "#wff" do
     context "when the statement is well-formed" do
       let(:well_formed_raw_statements) do
