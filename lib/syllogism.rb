@@ -87,14 +87,14 @@ class Syllogism
   end
 
   def statements_are_well_formed?
-    statements.all? do |statement|
+    statements.map do |statement|
       if statement.wff?
         true
       else
         statement.errors.each { |error| errors.push(error) }
         false
       end
-    end
+    end.all?
   end
 
   def term_histogram
