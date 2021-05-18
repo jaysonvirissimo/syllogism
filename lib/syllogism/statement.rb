@@ -29,6 +29,10 @@ class Syllogism
       terms.first
     end
 
+    def terms
+      @terms ||= atoms.select { |atom| TERM_TYPES.include?(atom.class) }
+    end
+
     def to_s
       atoms.map(&:value).join(" ")
     end
@@ -58,10 +62,6 @@ class Syllogism
 
     def known_formula?
       WffChecker.new(self).any?
-    end
-
-    def terms
-      @terms ||= atoms.select { |atom| TERM_TYPES.include?(atom.class) }
     end
 
     def unknown
