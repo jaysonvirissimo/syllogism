@@ -38,7 +38,9 @@ class Syllogism
   end
 
   def valid?
-    statements_are_well_formed? && meets_definition_of_syllogism?
+    statements_are_well_formed? &&
+      meets_definition_of_syllogism? &&
+      distribute_terms
   end
 
   private
@@ -52,6 +54,10 @@ class Syllogism
       errors.push("By definition, a syllogism must contain at least one statement")
       false
     end
+  end
+
+  def distribute_terms
+    statements.each(&:distribute) && true
   end
 
   def exactly_two_of_each_term?

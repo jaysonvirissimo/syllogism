@@ -10,6 +10,36 @@ RSpec.describe Syllogism::Statement do
     end
   end
 
+  describe "#distribute" do
+    it "distributes after an 'all'" do
+      statement = described_class.parse("all A is B")
+      statement.distribute
+      expect(statement.subject).to be_distributed
+      expect(statement.predicate).to_not be_distributed
+    end
+
+    it "distributes after a 'no'" do
+      statement = described_class.parse("no A is B")
+      statement.distribute
+      expect(statement.subject).to be_distributed
+      expect(statement.predicate).to_not be_distributed
+    end
+
+    it "distributes after a 'not'" do
+      statement = described_class.parse("some A is not B")
+      statement.distribute
+      expect(statement.subject).to_not be_distributed
+      expect(statement.predicate).to be_distributed
+    end
+
+    it "otherwise doesn't distribute" do
+      statement = described_class.parse("some A is B")
+      statement.distribute
+      expect(statement.subject).to_not be_distributed
+      expect(statement.predicate).to_not be_distributed
+    end
+  end
+
   describe "#predicate" do
     let(:raw_statement) { "all X is Y" }
 

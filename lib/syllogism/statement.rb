@@ -21,6 +21,15 @@ class Syllogism
       @errors = []
     end
 
+    def distribute
+      atoms.each_with_index do |atom, index|
+        if TERM_TYPES.include?(atom.class)
+          precursor = atoms[index - 1].class
+          atom.distributed = DISTRIBUTABLE_PRECURSOR_TYPES.include?(precursor)
+        end
+      end
+    end
+
     def predicate
       terms.last
     end
@@ -53,6 +62,8 @@ class Syllogism
       SingularTerm,
       Unknown
     ].freeze
+
+    DISTRIBUTABLE_PRECURSOR_TYPES = [All, No, Negation].freeze
 
     TERM_TYPES = [GeneralTerm, SingularTerm].freeze
 
