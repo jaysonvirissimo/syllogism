@@ -1,33 +1,52 @@
 class Syllogism
   class TermDistributor
     def initialize(statement)
-      @statement = statement
+      @atoms = statement.atoms
+      @current = nil
+      @position = 0
+      @terms = statement.terms
     end
 
     def call
       atoms.each_with_index do |atom, index|
-        if atom == statement.subject || atom == statement.predicate
-          previous_types = atoms.take(index).map(&:class)
-          atom.distributed = should_distribute?(previous_types, atom)
+        self.current, self.position = atom, index
+        if term?
+          atom.distributed = should_distribute?
         end
       end
     end
 
     private
 
-    attr_reader :statement
+    attr_accessor :current, :position
+    attr_reader :atoms, :terms
 
-    SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES = [All, Negation].freeze
-    MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES = [No].freeze
-
-    def atoms
-      statement.atoms
+    def anywhere_after_no?
+      preceeding_types.include?(No)
     end
 
-    def should_distribute?(previous_types, term)
-      immediate_predecessor = previous_types.last
-      SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES.include?(immediate_predecessor) ||
-        (MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES & previous_types).length.positive?
+    def immediately_after_all?
+      immediate_predecessor == All
+    end
+
+    def immediately_after_not?
+      immediate_predecessor == Negation
+    end
+
+    def immediate_predecessor
+      preceeding_types.last
+    end
+
+    def preceeding_types
+      atoms.take(position).map(&:class)
+    end
+
+    def should_distribute?
+      immediately_after_all? || immediately_after_not? || anywhere_after_no?
+    end
+
+    def term?
+      terms.include?(current)
     end
   end
 end
