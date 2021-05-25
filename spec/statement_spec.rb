@@ -18,11 +18,11 @@ RSpec.describe Syllogism::Statement do
       expect(statement.predicate).to_not be_distributed
     end
 
-    it "distributes after a 'no'" do
+    it "distributes every term after a 'no'" do
       statement = described_class.parse("no A is B")
       statement.distribute
       expect(statement.subject).to be_distributed
-      expect(statement.predicate).to_not be_distributed
+      expect(statement.predicate).to be_distributed
     end
 
     it "distributes after a 'not'" do
