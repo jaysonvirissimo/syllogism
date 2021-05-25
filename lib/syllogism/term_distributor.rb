@@ -7,16 +7,8 @@ class Syllogism
     def call
       atoms.each_with_index do |atom, index|
         if atom == statement.subject || atom == statement.predicate
-          predecessor = atoms[index - 1].class
-          subsequent_classes = atoms.take(index).map(&:class)
-
-          atom.distributed = if SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES.include?(predecessor)
-            true
-          elsif (MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES & subsequent_classes).length.positive?
-            true
-          else
-            false
-          end
+          previous_types = atoms.take(index).map(&:class)
+          atom.distributed = should_distribute?(previous_types, atom)
         end
       end
     end
@@ -30,6 +22,12 @@ class Syllogism
 
     def atoms
       statement.atoms
+    end
+
+    def should_distribute?(previous_types, term)
+      immediate_predecessor = previous_types.last
+      SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES.include?(immediate_predecessor) ||
+        (MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES & previous_types).length.positive?
     end
   end
 end
