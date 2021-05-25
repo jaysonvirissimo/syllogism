@@ -22,20 +22,7 @@ class Syllogism
     end
 
     def distribute
-      atoms.each_with_index do |atom, index|
-        if TERM_TYPES.include?(atom.class)
-          predecessor = atoms[index - 1].class
-          subsequent_classes = atoms.take(index).map(&:class)
-
-          atom.distributed = if SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES.include?(predecessor)
-            true
-          elsif (MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES & subsequent_classes).length.positive?
-            true
-          else
-            false
-          end
-        end
-      end
+      TermDistributor.new(self).call
     end
 
     def predicate
@@ -70,9 +57,6 @@ class Syllogism
       SingularTerm,
       Unknown
     ].freeze
-
-    SINGULARLY_DISTRIBUTABLE_PREDECESSOR_TYPES = [All, Negation].freeze
-    MULTIPLY_DISTRIBUTABLE_PREDECESSOR_TYPES = [No].freeze
 
     TERM_TYPES = [GeneralTerm, SingularTerm].freeze
 

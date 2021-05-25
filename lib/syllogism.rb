@@ -10,6 +10,7 @@ require "syllogism/some"
 require "syllogism/unknown"
 require "syllogism/verb"
 require "syllogism/statement"
+require "syllogism/term_distributor"
 require "syllogism/version"
 require "syllogism/wff_checker"
 
