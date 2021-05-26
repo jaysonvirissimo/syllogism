@@ -41,7 +41,10 @@ class Syllogism
   def valid?
     statements_are_well_formed? &&
       meets_definition_of_syllogism? &&
-      distribute_terms
+      distribute_terms &&
+      star_premises &&
+      star_conclusion &&
+      passes_star_test?
   end
 
   private
@@ -73,6 +76,14 @@ class Syllogism
     end
   end
 
+  def every_general_term_is_starred_exactly_once
+    statements.each_with_object(Hash.new(0)) do |statement, stars|
+      statement.general_terms.each do |general_term|
+        stars[general_term.value] += 1 if general_term.starred?
+      end
+    end.values.all? { |star_count| star_count == 1 }
+  end
+
   def forms_a_chain?
     (0...statements.count - 1).map do |index|
       current_statement = statements[index]
@@ -93,6 +104,27 @@ class Syllogism
     contains_statements? && exactly_two_of_each_term? && forms_a_chain?
   end
 
+  # See Harry Gensler's paper, _A simplified decision procedure for categorical syllogisms._
+  # https://projecteuclid.org/journals/notre-dame-journal-of-formal-logic/volume-14/issue-4/A-simplified-decision-procedure-for-categorical-syllogisms/10.1305/ndjfl/1093891100.full
+  def passes_star_test?
+    every_general_term_is_starred_exactly_once &&
+      there_is_exactly_one_star_on_the_right_hand_side
+  end
+
+  def star_premises
+    premises.each do |premise|
+      premise.terms.each do |term|
+        term.starred = term.distributed?
+      end
+    end
+  end
+
+  def star_conclusion
+    conclusion.terms.each do |term|
+      term.starred = !term.distributed?
+    end
+  end
+
   def statements_are_well_formed?
     statements.map do |statement|
       if statement.wff?
@@ -108,5 +140,9 @@ class Syllogism
     statements.flat_map(&:terms).map(&:value).each_with_object(Hash.new(0)) do |value, hash|
       hash[value] += 1
     end
+  end
+
+  def there_is_exactly_one_star_on_the_right_hand_side
+    statements.map(&:predicate).count(&:starred?) == 1
   end
 end

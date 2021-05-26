@@ -35,6 +35,8 @@ end
 
 # Entire arguments:
 Syllogism['all P is S', 'j is P', 'j is S'].valid? # => true
+
+Syllogism['no A is B', 'no C is A', 'no C is B'].valid? # => false
 ```
 
 ## Development

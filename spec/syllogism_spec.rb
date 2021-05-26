@@ -36,6 +36,12 @@ RSpec.describe Syllogism do
         it { expect(subject).to_not be_valid }
       end
 
+      context "because it doesn't preserve the truth of the premises" do
+        let(:raw_statements) { ["no A is B", "no C is A", "no C is B"] }
+
+        it { expect(subject).to_not be_valid }
+      end
+
       context "because it doesn't meet the definition of a syllogism" do
         context "since it has an odd number count of a term" do
           let(:raw_statements) do

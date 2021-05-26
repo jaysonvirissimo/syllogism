@@ -25,6 +25,10 @@ class Syllogism
       TermDistributor.new(self).call
     end
 
+    def general_terms
+      terms.select { |term| term.instance_of?(GeneralTerm) }
+    end
+
     def predicate
       terms.last
     end
