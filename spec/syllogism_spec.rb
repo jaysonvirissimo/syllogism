@@ -16,6 +16,36 @@ RSpec.describe Syllogism do
     end
   end
 
+  describe "==" do
+    let(:argument) { Syllogism["all A is B", "some C is A", "some C is B"] }
+
+    context "with different statements" do
+      let(:other_argument) do
+        Syllogism["all A is B", "all C is A", "all C is B"]
+      end
+
+      it { expect(argument).to_not eq(other_argument) }
+    end
+
+    context "with the same statements" do
+      context "using the same variables" do
+        let(:other_argument) do
+          Syllogism["all A is B", "some C is A", "some C is B"]
+        end
+
+        it { expect(argument).to eq(other_argument) }
+      end
+
+      context "but using different variables" do
+        let(:other_argument) do
+          Syllogism["all X is Y", "some Z is X", "some Z is Y"]
+        end
+
+        it { expect(argument).to eq(other_argument) }
+      end
+    end
+  end
+
   describe "#valid?" do
     context "when the syllogism is valid" do
       let(:raw_statements) { ["all A is B", "some C is A", "some C is B"] }

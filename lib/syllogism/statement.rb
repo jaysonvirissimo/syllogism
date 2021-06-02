@@ -25,6 +25,10 @@ class Syllogism
       TermDistributor.new(self).call
     end
 
+    def formula
+      formula_checker.formula
+    end
+
     def general_terms
       terms.select { |term| term.instance_of?(GeneralTerm) }
     end
@@ -64,12 +68,16 @@ class Syllogism
 
     TERM_TYPES = [GeneralTerm, SingularTerm].freeze
 
+    def formula_checker
+      @formula_checker ||= WffChecker.new(self)
+    end
+
     def known_atoms?
       unknown.none?
     end
 
     def known_formula?
-      WffChecker.new(self).any?
+      formula_checker.any?
     end
 
     def unknown
