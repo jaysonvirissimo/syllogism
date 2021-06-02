@@ -31,9 +31,8 @@ class Syllogism
   end
 
   def ==(other)
-    premises.map(&:formula).sort == other.premises.map(&:formula) &&
-      conclusion.formula == other.conclusion.formula &&
-      valid? == valid?
+    premises.map(&:formula).sort == other.premises.map(&:formula).sort &&
+      conclusion.formula == other.conclusion.formula
   end
 
   def premises
