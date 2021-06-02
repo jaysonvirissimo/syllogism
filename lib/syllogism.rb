@@ -30,6 +30,12 @@ class Syllogism
     @statements = statements
   end
 
+  def ==(other)
+    premises.map(&:formula).sort == other.premises.map(&:formula) &&
+      conclusion.formula == other.conclusion.formula &&
+      valid? == valid?
+  end
+
   def premises
     @premises ||= statements.take(statements.length - 1)
   end

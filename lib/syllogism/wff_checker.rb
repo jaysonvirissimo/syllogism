@@ -5,9 +5,13 @@ class Syllogism
     end
 
     def any?
-      WELL_FORMED_FORMULAS.any? do |formula|
-        atom_types == formula
-      end
+      formula && !formula.empty?
+    end
+
+    def formula
+      @formula ||= WELL_FORMED_FORMULAS.find do |formula_type|
+        atom_types == formula_type
+      end.to_s
     end
 
     private
