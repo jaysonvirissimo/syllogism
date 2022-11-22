@@ -42,6 +42,10 @@ argument = Syllogism["all A is B", "some C is A", "some C is B"]
 other_argument = Syllogism["all X is Y", "some Z is X", "some Z is Y"]
 
 argument == other_argument # => true
+
+# Generate random argument
+Syllogism.sample.statements.map(&:to_s)
+=> ["all M is C", "no L is M", "some L is C"]
 ```
 
 ## Development
