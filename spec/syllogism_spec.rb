@@ -46,6 +46,17 @@ RSpec.describe Syllogism do
     end
   end
 
+  describe ".sample" do
+    subject { described_class.sample }
+
+    it "results in an argument made of well-formed statements" do
+      subject.premises.each do |premise|
+        expect(premise).to be_wff
+      end
+      expect(subject.conclusion).to be_wff
+    end
+  end
+
   describe "#valid?" do
     context "when the syllogism is valid" do
       let(:raw_statements) { ["all A is B", "some C is A", "some C is B"] }

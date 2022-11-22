@@ -6,6 +6,6 @@ class Syllogism
 
     private
 
-    GENERAL_TERM_VALUES = ("A".."Z").freeze
+    GENERAL_TERM_VALUES = ("A".."Z")
   end
 end

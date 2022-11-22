@@ -25,6 +25,24 @@ class Syllogism
     new(raw_statements.map { |raw_statement| Statement.parse(raw_statement) })
   end
 
+  def self.random_statement(letter, other_letter)
+    case (1..4).to_a.sample
+    when 1 then "all #{letter} is #{other_letter}"
+    when 2 then "no #{letter} is #{other_letter}"
+    when 3 then "some #{letter} is #{other_letter}"
+    when 4 then "some #{letter} is #{other_letter}"
+    end
+  end
+
+  def self.sample
+    first, second, third = ("A".."Z").to_a.sample(3)
+    parse(
+      random_statement(first, second),
+      random_statement(third, first),
+      random_statement(third, second)
+    )
+  end
+
   def initialize(statements)
     @errors = []
     @statements = statements
