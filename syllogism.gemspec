@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = "Proof checker for arguments in Aristotle's term logic"
   spec.homepage = "https://github.com/jaysonvirissimo/syllogism"
   spec.license = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org/"
 
